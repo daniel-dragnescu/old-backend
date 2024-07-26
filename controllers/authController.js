@@ -17,7 +17,12 @@ const handleLogin = async (req, res) => {
               process.env.ACCESS_TOKEN_SECRET,
               { expiresIn: '4h' }
             )
-            res.json({ accessToken })
+            res.json({ accessToken,
+                       user: {
+                        email: foundUser.email,
+                        callsign: foundUser.callsign
+                      }
+                    })
         } else {
           res.sendStatus(401)
         }
