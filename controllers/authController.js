@@ -13,14 +13,16 @@ const handleLogin = async (req, res) => {
         const match = await bcrypt.compare(password, foundUser.password)
         if (match) {
           const accessToken = jwt.sign(
-            { callsign: foundUser.callsign },
+            { userId: foundUser._id,
+              callsign: foundUser.callsign },
               process.env.ACCESS_TOKEN_SECRET,
               { expiresIn: '4h' }
             )
             res.json({ accessToken,
                        user: {
                         email: foundUser.email,
-                        callsign: foundUser.callsign
+                        callsign: foundUser.callsign,
+                        id: foundUser._id
                       }
                     })
         } else {
