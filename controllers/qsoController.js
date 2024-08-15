@@ -1,5 +1,5 @@
 const Qso = require('../models/Qso');
-const IndicativeCount = require('../models/IndicativeCount');
+// const IndicativeCount = require('../models/IndicativeCount');
 const asyncHandler = require('express-async-handler');
 
 const getAllQso = asyncHandler(async (req, res) => {
@@ -23,12 +23,12 @@ const createNewQso = asyncHandler(async (req, res) => {
 
   try {
     // Create or update indicative count
-    let indicativeCount = await IndicativeCount.findOne({ callsign });
-    if (!indicativeCount) {
-      indicativeCount = await IndicativeCount.create({ callsign });
-    }
-    indicativeCount.count += 1;
-    await indicativeCount.save();
+    // let indicativeCount = await IndicativeCount.findOne({ callsign });
+    // if (!indicativeCount) {
+    //   indicativeCount = await IndicativeCount.create({ callsign });
+    // }
+    // indicativeCount.count += 1;
+    // await indicativeCount.save();
 
     // Create QSO
     const createQso = await Qso.create({ callsign, rst_received, rst_sent, op, qth, comments });
@@ -95,11 +95,11 @@ const deleteQso = asyncHandler(async (req, res) => {
     await Qso.deleteOne({ _id });
 
     // Decrease indicative count when deleting a QSO
-    const indicativeCount = await IndicativeCount.findOne({ callsign });
-    if (indicativeCount) {
-      indicativeCount.count -= 1;
-      await indicativeCount.save();
-    }
+    // const indicativeCount = await IndicativeCount.findOne({ callsign });
+    // if (indicativeCount) {
+    //   indicativeCount.count -= 1;
+    //   await indicativeCount.save();
+    // }
 
     const reply = `QSO ${callsign} with ID ${_id} deleted`;
 
@@ -109,30 +109,30 @@ const deleteQso = asyncHandler(async (req, res) => {
   }
 });
 
-const getIndicativeCount = asyncHandler(async (req, res) => {
-  const { callsign } = req.params;
+// const getIndicativeCount = asyncHandler(async (req, res) => {
+//   const { callsign } = req.params;
 
-  if (!callsign) {
-    return res.status(400).json({ message: 'Callsign required' });
-  }
+//   if (!callsign) {
+//     return res.status(400).json({ message: 'Callsign required' });
+//   }
 
-  try {
-    const indicativeCount = await IndicativeCount.findOne({ callsign });
+//   try {
+//     const indicativeCount = await IndicativeCount.findOne({ callsign });
 
-    if (indicativeCount) {
-      res.json({ callsign, count: indicativeCount.count });
-    } else {
-      res.status(404).json({ message: 'Indicative count not found' });
-    }
-  } catch (error) {
-    res.status(500).json({ message: 'An error occurred while fetching indicative count', error: error.message });
-  }
-});
+//     if (indicativeCount) {
+//       res.json({ callsign, count: indicativeCount.count });
+//     } else {
+//       res.status(404).json({ message: 'Indicative count not found' });
+//     }
+//   } catch (error) {
+//     res.status(500).json({ message: 'An error occurred while fetching indicative count', error: error.message });
+//   }
+// });
 
 module.exports = {
   getAllQso,
   createNewQso,
   updateQso,
   deleteQso,
-  getIndicativeCount,
+  // getIndicativeCount,
 };

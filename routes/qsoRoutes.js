@@ -10,6 +10,6 @@ router.route('/:id')
   .patch(qsoController.updateQso)
   .delete(qsoController.deleteQso)
 
-router.get('/indicative/:callsign', qsoController.getIndicativeCount); // New route for fetching indicative count
+// router.get('/indicative/:callsign', qsoController.getIndicativeCount); // New route for fetching indicative count
 
 module.exports = router
